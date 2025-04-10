@@ -1,66 +1,128 @@
 // src/App.tsx
 
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
-import honoLogo from "./assets/hono.svg";
-import "./App.css";
+import ServerList, { ServerObject } from "./ServerList";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("unknown");
+    const servers: ServerObject[] = [
+        { id: '1', name: 'S1' },
+        { id: '2', name: 'S2', isActive: true},
+        { id: '3', name: 'S3' },
+    ];
+    return (
+        <>
+            <div className="flex h-screen">
+                {/* Server List - Left Sidebar */}
+                <ServerList servers={servers} />
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <a href="https://hono.dev/" target="_blank">
-          <img src={honoLogo} className="logo cloudflare" alt="Hono logo" />
-        </a>
-        <a href="https://workers.cloudflare.com/" target="_blank">
-          <img
-            src={cloudflareLogo}
-            className="logo cloudflare"
-            alt="Cloudflare logo"
-          />
-        </a>
-      </div>
-      <h1>Vite + React + Hono + Cloudflare</h1>
-      <div className="card">
-        <button
-          onClick={() => setCount((count) => count + 1)}
-          aria-label="increment"
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <div className="card">
-        <button
-          onClick={() => {
-            fetch("/api/")
-              .then((res) => res.json() as Promise<{ name: string }>)
-              .then((data) => setName(data.name));
-          }}
-          aria-label="get name"
-        >
-          Name from API is: {name}
-        </button>
-        <p>
-          Edit <code>worker/index.ts</code> to change the name
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the logos to learn more</p>
-    </>
-  );
+                {/* Channel List - Secondary Sidebar */}
+                <div className="w-64 bg-background-medium text-white p-4">
+                    <h1 className="text-xl font-bold mb-4">Server Name</h1>
+                    <div className="mb-6">
+                        <h2 className="text-text-secondary text-sm uppercase mb-2">
+                            Channels
+                        </h2>
+                        <ul>
+                            <li className="py-1"># general</li>
+                            <li className="py-1 bg-background-light rounded px-2">
+                                # random
+                            </li>
+                            <li className="py-1"># help</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 className="text-text-secondary text-sm uppercase mb-2">
+                            Online Users
+                        </h2>
+                        <ul>
+                            <li className="flex items-center py-1">
+                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                User 1
+                            </li>
+                            <li className="flex items-center py-1">
+                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
+                                User 2
+                            </li>
+                            <li className="flex items-center py-1">
+                                <div className="w-2 h-2 rounded-full bg-gray-500 mr-2"></div>
+                                User 3
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Main Chat Area */}
+                <div className="flex-1 flex flex-col bg-background-light">
+                    {/* Chat Header */}
+                    <div className="h-14 bg-background-light border-b border-border px-4 flex items-center">
+                        <h2 className="text-white font-medium"># random</h2>
+                    </div>
+
+                    {/* Chat Messages */}
+                    <div className="flex-1 overflow-y-auto p-4">
+                        <div className="mb-4">
+                            <div className="flex items-start">
+                                <div className="w-10 h-10 rounded-full bg-blue-600 mr-3 flex items-center justify-center text-white">
+                                    U1
+                                </div>
+                                <div>
+                                    <div className="flex items-baseline">
+                                        <span className="font-bold text-white mr-2">
+                                            User 1
+                                        </span>
+                                        <span className="text-xs text-text-secondary">
+                                            Today at 12:34 PM
+                                        </span>
+                                    </div>
+                                    <p className="text-text-muted">
+                                        Hello everyone! How are you doing today?
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="flex items-start">
+                                <div className="w-10 h-10 rounded-full bg-green-500 mr-3 flex items-center justify-center text-white">
+                                    U2
+                                </div>
+                                <div>
+                                    <div className="flex items-baseline">
+                                        <span className="font-bold text-white mr-2">
+                                            User 2
+                                        </span>
+                                        <span className="text-xs text-text-secondary">
+                                            Today at 12:36 PM
+                                        </span>
+                                    </div>
+                                    <p className="text-text-muted">
+                                        I'm doing great! Just working on some
+                                        new features.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Chat Input */}
+                    <div className="p-4 bg-background-medium">
+                        <div className="bg-background-light rounded-lg flex items-center p-2">
+                            <button className="text-text-secondary hover:text-white px-2">
+                                +
+                            </button>
+                            <input
+                                type="text"
+                                className="bg-transparent border-none flex-1 text-white focus:outline-none px-2"
+                                placeholder="Message #random"
+                            />
+                            <button className="text-text-secondary hover:text-white px-2">
+                                😀
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default App;

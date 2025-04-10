@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  /* Discord-like theme */
+
+  /* Colors */
+  --color-background-dark: oklch(0.08 0.02 255); /* gray-900 */
+  --color-background-medium: oklch(0.14 0.02 255); /* gray-800 */
+  --color-background-light: oklch(0.22 0.02 255); /* gray-700 */
+  --color-border: oklch(0.27 0.02 255); /* gray-600 */
+  --color-text-primary: #fff;
+  --color-text-secondary: oklch(0.55 0.02 255); /* gray-400 */
+  --color-text-muted: oklch(0.85 0.02 255); /* gray-100 */
+
+  --color-blue-600: oklch(0.546 0.245 262.881);
+  --color-green-500: oklch(0.723 0.219 149.579);
+  --color-gray-500: oklch(0.551 0.027 264.364);
+  --color-gray-700: oklch(0.373 0.034 259.733);
+}
