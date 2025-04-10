@@ -1,5 +1,6 @@
 // src/App.tsx
 
+import ChannelList, { ChannelObject } from "./ChannelList";
 import ServerList, { ServerObject } from "./ServerList";
 
 function App() {
@@ -8,47 +9,19 @@ function App() {
         { id: '2', name: 'S2', isActive: true},
         { id: '3', name: 'S3' },
     ];
+
+    const channelList: ChannelObject[] = [
+        { id: "asdasd", name: "general", isActive: true },
+        { id: "asdasd2", name: "random" }
+    ];
+
     return (
         <>
             <div className="flex h-screen">
                 {/* Server List - Left Sidebar */}
                 <ServerList servers={servers} />
 
-                {/* Channel List - Secondary Sidebar */}
-                <div className="w-64 bg-background-medium text-white p-4">
-                    <h1 className="text-xl font-bold mb-4">Server Name</h1>
-                    <div className="mb-6">
-                        <h2 className="text-text-secondary text-sm uppercase mb-2">
-                            Channels
-                        </h2>
-                        <ul>
-                            <li className="py-1"># general</li>
-                            <li className="py-1 bg-background-light rounded px-2">
-                                # random
-                            </li>
-                            <li className="py-1"># help</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 className="text-text-secondary text-sm uppercase mb-2">
-                            Online Users
-                        </h2>
-                        <ul>
-                            <li className="flex items-center py-1">
-                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-                                User 1
-                            </li>
-                            <li className="flex items-center py-1">
-                                <div className="w-2 h-2 rounded-full bg-green-500 mr-2"></div>
-                                User 2
-                            </li>
-                            <li className="flex items-center py-1">
-                                <div className="w-2 h-2 rounded-full bg-gray-500 mr-2"></div>
-                                User 3
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <ChannelList channels={channelList} serverName="S2"/>
 
                 {/* Main Chat Area */}
                 <div className="flex-1 flex flex-col bg-background-light">
