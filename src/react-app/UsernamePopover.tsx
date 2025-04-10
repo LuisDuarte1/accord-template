@@ -1,11 +1,11 @@
-import React, {
+import {
     useState,
     useRef,
     useEffect,
     FormEvent,
     ChangeEvent,
 } from "react";
-import { useUser } from "./context/User";
+import { useUser } from "./context/user";
 
 const UsernamePopover = () => {
     const { username, updateUsername, isLoading } = useUser();
