@@ -3,23 +3,24 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "accord",
-    "main": "./src/worker/index.ts",
-    "compatibility_date": "2025-04-01",
-    "compatibility_flags": ["nodejs_compat"],
-    "observability": {
-        "enabled": true,
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "accord",
+  "main": "./src/worker/index.ts",
+  "compatibility_date": "2025-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+  },
+  "upload_source_maps": true,
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "directory": "./dist/client",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "accord-db",
+      "database_id": "a56f5417-774b-4f8f-bb6b-0c20bdfa5611",
     },
-    "upload_source_maps": true,
-    "assets": {
-        "not_found_handling": "single-page-application",
-    },
-    "d1_databases": [
-        {
-            "binding": "DB",
-            "database_name": "accord-db",
-            "database_id": "a56f5417-774b-4f8f-bb6b-0c20bdfa5611",
-        },
-    ],
+  ],
 }

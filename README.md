@@ -1,8 +1,11 @@
 # Accord Template for ENEI Workshop 2025 (React + Vite + Hono + Cloudflare Workers)
 
-Workshop to build multiplayer applications on top of Durable Objects. Accord (opposite to discord) is a real-time chat application that leverages Durable Objects to easily horiziontally scale servers and chat rooms
+Workshop to build multiplayer applications on top of Durable Objects. Accord (opposite to discord) is a real-time chat application that leverages Durable Objects to easily horiziontally scale servers and chat rooms.
+
+You'll need `Node.js` (or any javascript runtime that's compatible) and `pnpm`.
 
 # React + Vite + Hono + Cloudflare Workers Template
+
 This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
 
 ![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)

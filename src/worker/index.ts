@@ -1,6 +1,9 @@
 import { Hono } from "hono";
+import { BlankSchema } from "hono/types";
 const app = new Hono<{ Bindings: Env }>();
 
-app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
+const apiApp = new Hono<{ Bindings: Env }, BlankSchema, "/api">();
+
+app.route("/api", apiApp);
 
 export default app;
