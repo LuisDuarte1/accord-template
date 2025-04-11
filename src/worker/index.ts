@@ -4,6 +4,10 @@ const app = new Hono<{ Bindings: Env }>();
 
 const apiApp = new Hono<{ Bindings: Env }, BlankSchema, "/api">();
 
-app.route("/api", apiApp);
+apiApp.get("/", (ctx) => {
+    return ctx.json({ "api": true })
+})
 
+
+app.route("/api", apiApp);
 export default app;
