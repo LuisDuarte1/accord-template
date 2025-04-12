@@ -16,6 +16,7 @@ function App() {
         <ChannelProvider>
           <ServerView />
         </ChannelProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </div>
     </>
   );
@@ -26,7 +27,7 @@ function ServerView() {
   const channelContext = useChannelContext();
 
   return (
-    serverContext.selectedServer !== null && (
+    serverContext.selectedServer !== undefined && serverContext.selectedServer !== null ? (
       <>
         <ChannelList />
 
@@ -42,8 +43,13 @@ function ServerView() {
           {/* Chat Messages */}
           {channelContext.selectedChannel !== null && <ChatMessages />}
         </div>
-        <ReactQueryDevtools initialIsOpen={false} />
       </>
+    ) : (
+        <>
+            <div className="flex-1 flex flex-col bg-background-light">
+            </div>
+
+        </>
     )
   );
 }
