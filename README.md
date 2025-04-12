@@ -32,16 +32,6 @@ Get started in minutes with local development or deploy directly via the Cloudfl
 
 <!-- dash-content-end -->
 
-## Getting Started
-
-To start a new project with this template, run:
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
-```
-
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
 
 ## Development
 
