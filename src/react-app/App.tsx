@@ -1,27 +1,24 @@
 // src/App.tsx
 
-import { useEffect } from "react";
-import ChannelList, { ChannelObject } from "./ChannelList";
-import ChatMessages, { MessageObject } from "./ChatMessages";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import ChannelList from "./ChannelList";
+import ChatMessages from "./ChatMessages";
 import { ChannelProvider, useChannelContext } from "./context/Channel";
-import { useServerContext } from "./context/Server";
-import ServerList, { ServerObject } from "./ServerList";
+import { ServerProvider, useServerContext } from "./context/Server";
+import ServerList from "./ServerList";
 
 function App() {
-  const servers: ServerObject[] = [
-    { id: "1", name: "S1" },
-    { id: "2", name: "S2" },
-    { id: "3", name: "S3" },
-  ];
-
   return (
     <>
       <div className="flex h-screen">
-        {/* Server List - Left Sidebar */}
-        <ServerList servers={servers} />
-        <ChannelProvider>
-          <ServerView />
-        </ChannelProvider>
+        <ServerProvider>
+          {/* Server List - Left Sidebar */}
+          <ServerList />
+          <ChannelProvider>
+            <ServerView />
+          </ChannelProvider>
+        </ServerProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </div>
     </>
   );
@@ -31,51 +28,10 @@ function ServerView() {
   const serverContext = useServerContext();
   const channelContext = useChannelContext();
 
-  const messages: MessageObject[] = [
-    {
-      id: "msg1",
-      author: {
-        id: "user1",
-        name: "User 1",
-        avatarInitials: "U1",
-      },
-      content: "Hello everyone! How are you doing today?",
-      timestamp: "Today at 12:34 PM",
-    },
-    {
-      id: "msg2",
-      author: {
-        id: "user2",
-        name: "User 2",
-        avatarInitials: "U2",
-      },
-      content: "I'm doing great! Just working on some new features.",
-      timestamp: "Today at 12:36 PM",
-    },
-  ];
-
-  const channelList: ChannelObject[] = [
-    { id: "asdasd", name: "general" },
-    { id: "asdasd2", name: "random" },
-  ];
-
-  useEffect(() => {
-    if (
-      serverContext.selectedServer !== null &&
-      channelContext.selectedChannel === null &&
-      channelList.length > 0
-    ) {
-      channelContext.setSelectedChannel(channelList[0]);
-    }
-  }, [channelList, serverContext, channelContext]);
-
   return (
-    serverContext.selectedServer !== null && (
+    serverContext.selectedServer !== undefined && serverContext.selectedServer !== null ? (
       <>
-        <ChannelList
-          channels={channelList}
-          serverName={serverContext.selectedServer.name}
-        />
+        <ChannelList />
 
         {/* Main Chat Area */}
         <div className="flex-1 flex flex-col bg-background-light">
@@ -87,28 +43,15 @@ function ServerView() {
           </div>
 
           {/* Chat Messages */}
-          <ChatMessages messages={messages} />
-
-          {/* Chat Input */}
-          {channelContext.selectedChannel !== null && (
-            <div className="p-4 bg-background-medium">
-              <div className="bg-background-light rounded-lg flex items-center p-2">
-                <button className="text-text-secondary hover:text-white px-2">
-                  +
-                </button>
-                <input
-                  type="text"
-                  className="bg-transparent border-none flex-1 text-white focus:outline-none px-2"
-                  placeholder={`Message #${channelContext.selectedChannel.name}`}
-                />
-                <button className="text-text-secondary hover:text-white px-2">
-                  😀
-                </button>
-              </div>
-            </div>
-          )}
+          {channelContext.selectedChannel !== null && <ChatMessages />}
         </div>
       </>
+    ) : (
+        <>
+            <div className="flex-1 flex flex-col bg-background-light">
+            </div>
+
+        </>
     )
   );
 }

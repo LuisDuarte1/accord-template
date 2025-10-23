@@ -10,7 +10,9 @@ type ServerProps = {
   name: string;
   isActive?: boolean;
 };
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getServers } from "./queries/servers";
+import ServerPopover from "./ServerPopover";
 
 interface ServerClickProps {
   onClick: (server: ServerObject) => void;
@@ -35,27 +37,25 @@ const Server = ({
       className={`w-12 h-12 rounded-full ${bgColor} flex items-center justify-center text-white mb-4 cursor-pointer hover:opacity-90`}
       onClick={handleClick}
     >
-      <span>{name}</span>
+      <span>{name.substring(0, 3).toUpperCase()}</span>
     </div>
   );
 };
 
-type ServerListProps = {
-  servers: ServerObject[];
-};
-
-const ServerList = ({ servers }: ServerListProps) => {
+const ServerList = () => {
+  const servers = getServers();
   const serverContext = useServerContext();
+  const [isServerPopoverOpen, setIsServerPopoverOpen] = useState(false);
 
   useEffect(() => {
-    if (serverContext.selectedServer === null) {
-      serverContext.setSelectedServer(servers[0]);
+    if (serverContext.selectedServer === null && servers.data !== undefined) {
+      serverContext.setSelectedServer(servers.data[0]);
     }
   }, [serverContext, servers]);
 
   return (
     <div className="w-20 bg-background-dark flex flex-col items-center py-4 overflow-y-auto">
-      {servers.map((server) => (
+      {servers.data !== undefined && servers.data.map((server) => (
         <Server
           key={server.id}
           id={server.id}
@@ -66,10 +66,14 @@ const ServerList = ({ servers }: ServerListProps) => {
       ))}
       <div
         className={`w-12 h-12 rounded-full bg-background-light flex items-center justify-center text-white mb-4 cursor-pointer hover:opacity-90`}
-        onClick={() => {}}
+        onClick={() => setIsServerPopoverOpen(true)}
       >
         <span>+</span>
       </div>
+      <ServerPopover
+        isOpen={isServerPopoverOpen}
+        setIsOpen={setIsServerPopoverOpen}
+      />
     </div>
   );
 };
