@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: Accord API
+  version: 1.0.0
+  description: API for the Accord chat application.
+paths:
+  /api:
+    get:
+      summary: Check API status
+      responses:
+        '200':
+          description: API is available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api:
+                    type: boolean
+  /api/servers:
+    get:
+      summary: Get all servers
+      responses:
+        '200':
+          description: A list of servers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Server'
+    post:
+      summary: Create a new server
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewServer'
+      responses:
+        '200':
+          description: The created server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Server'
+        '400':
+          description: Invalid request body
+  /api/servers/{server_id}/channels:
+    get:
+      summary: Get all channels for a server
+      parameters:
+        - name: server_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of channels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Channel'
+        '400':
+          description: Invalid server ID
+    post:
+      summary: Create a new channel for a server
+      parameters:
+        - name: server_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewChannel'
+      responses:
+        '200':
+          description: The created channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '400':
+          description: Invalid request body or server ID
+  /api/servers/{server_id}/channels/{channel_id}/messages:
+    get:
+      summary: Get the latest messages for a channel
+      parameters:
+        - name: server_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccordMessage'
+        '400':
+          description: Invalid server or channel ID
+  /api/servers/{server_id}/channels/{channel_id}/connect:
+    get:
+      summary: Connect to a channel via WebSocket
+      description: |
+        This endpoint upgrades the HTTP connection to a WebSocket connection.
+        A `username` query parameter is required.
+        The server will respond with a 101 Switching Protocols status code to upgrade the connection.
+        Server sends `AccordMessage & {type: "message"}` to a client when it broadcasts a message.
+        Client sends the raw message to the server when it wants to send a message - server will reply `AccordMessage & {type: "ack"}` to acknowledge the message sending.
+
+      parameters:
+        - name: server_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: channel_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: username
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '101':
+          description: WebSocket connection established.
+        '400':
+          description: Invalid server or channel ID, or missing username.
+components:
+  schemas:
+    Server:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    NewServer:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+    Channel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        server_id:
+          type: string
+          format: uuid
+    NewChannel:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+    AccordMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: integer
+        username:
+          type: string
+        message:
+          type: string
